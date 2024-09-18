@@ -213,7 +213,7 @@ Sebelum menjalankan proyek ini, pastikan Anda telah menginstal:
     }
     ```
 
-### **GET /transactions/user/:user_id**
+### **GET /transactions/users**
 
 - **Response Body:**
     ```json

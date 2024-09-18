@@ -22,7 +22,11 @@ func GetTransactionByID(c *gin.Context) {
 
 func GetTransactionsByUserID(c *gin.Context) {
 	var transactions []models.Transaction
-	userID := c.Param("user_id")
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
 
 	if err := config.DB.Where("user_id = ?", userID).Preload("Item").Find(&transactions).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Transactions not found"})
