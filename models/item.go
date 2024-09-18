@@ -8,6 +8,7 @@ type Item struct {
 	Price       float64
 	Description string `gorm:"size:500"`
 	UserID      uint
+	User        User `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE;"`
 }
 
 func MigrateItem(db *gorm.DB) {
