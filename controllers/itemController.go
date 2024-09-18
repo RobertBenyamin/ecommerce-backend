@@ -28,6 +28,23 @@ func GetItemByID(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
+func GetItemsByUserID(c *gin.Context) {
+	var items []models.Item
+	
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	if err := config.DB.Where("user_id = ?", userID).Find(&items).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Items not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, items)
+}
+
 func CreateItem(c *gin.Context) {
 	var item models.Item
 
