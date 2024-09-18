@@ -13,6 +13,7 @@ Proyek ini adalah backend untuk aplikasi e-commerce yang dibangun dengan menggun
 - **Item**
   - Menampilkan semua item
   - Menampilkan item berdasarkan ID
+  - Menampilkan item berdasarkan ID pengguna
   - Membuat item baru
   - Memperbarui item
   - Menghapus item
@@ -120,6 +121,21 @@ Sebelum menjalankan proyek ini, pastikan Anda telah menginstal:
       "Description": "Description of item 1",
       "UserID": 1
     }
+    ```
+
+### **GET /items/users**
+
+- **Response Body:**
+    ```json
+    [
+      {
+        "ID": 1,
+        "Name": "Item 1",
+        "Price": 100,
+        "Description": "Description of item 1",
+        "UserID": 1
+      }
+    ]
     ```
 
 ### **POST /items**
