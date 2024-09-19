@@ -11,20 +11,25 @@ import (
 )
 
 func RegisterUser(c *gin.Context) {
-	var user models.User
-	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+    var user models.User
+    if err := c.ShouldBindJSON(&user); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+        return
+    }
 
-	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 8)
-	user.Password = string(hashedPassword)
+    if user.Name == "" || user.Email == "" || user.Password == "" {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "All fields (name, email, password) are required"})
+        return
+    }
 
-	config.DB.Create(&user)
+    hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 8)
+    user.Password = string(hashedPassword)
 
-	token, _ := middlewares.GenerateJWT(user.ID)
+    config.DB.Create(&user)
 
-	c.JSON(http.StatusOK, gin.H{"token": token})
+    token, _ := middlewares.GenerateJWT(user.ID)
+
+    c.JSON(http.StatusOK, gin.H{"token": token})
 }
 
 func LoginUser(c *gin.Context) {
